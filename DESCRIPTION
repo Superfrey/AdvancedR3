@@ -5,6 +5,7 @@ Version: 0.0.1
 Imports:
     dplyr,
     fs,
+    ggplot2,
     here,
     knitr,
     readr,
@@ -19,6 +20,9 @@ Encoding: UTF-8
 Suggests: 
     gitcreds,
     renv,
+    roxygen2,
     styler
 URL: https://github.com/Superfrey/AdvancedR3
 BugReports: https://github.com/Superfrey/AdvancedR3/issues
+Depends: 
+    tidyverse

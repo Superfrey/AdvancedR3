@@ -29,22 +29,43 @@ lipidomics %>%
     mutate(across(where(is.numeric), ~round(.x, digits = 1)))
 ```
 
-### Function
+### Function for descriptive stats
 
 ```{r}
+#' descriptive_continous_stats
+#'
+#' @param data 
+#'
+#' @return
+#'  summary statistics for continous variables
+#' @export
+#'  a table with variables mean and sd
+#' @examples
 descriptive_stats <- function(data){
-descriptive_stats <- data %>% 
-    dplyr::group_by(metabolite) %>% 
+data %>% 
+    dplyr::group_by(metabolite) %>%  #can you do something about the group and define this in the function?
     dplyr::summarise(dplyr::across(value, list(mean = mean, sd = sd))) %>% 
-    dplyr::mutate(dplyr::acrossacross(where(is.numeric), ~round(.x, digits = 1)))
-    return(descriptive_stats)
+    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), ~round(.x, digits = 1)))
 }
+#Remeber to add roxy for function and moce into functions.R
+```
 
+### Function for visualization
 
+```{r}
+metabolite_distribution_plot <- ggplot(lipidomics, aes(x = value)) +
+  geom_histogram() +
+  facet_wrap(vars(metabolite), scales = "free")
+
+metabolite_distribution_plot
 ```
 
 ```{r}
-# Code chunk
+plot_distribution <- function(data) {
+  ggplot2::ggplot(data, aes(x = value)) +
+  ggplot2::geom_histogram() +
+  ggplot2::facet_wrap(vars(metabolite), scales = "free")
+}
 ```
 
 ## This is poorly formatted
