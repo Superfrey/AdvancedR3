@@ -9,10 +9,11 @@ Imports:
     knitr,
     readr,
     readxl,
-    renv,
     rmarkdown,
     snakecase,
     stringr,
     tidyr,
     usethis
 Encoding: UTF-8
+Suggests: 
+    renv
