@@ -3,6 +3,11 @@ Title: "Learning R!"
 Type: Project
 Version: 0.0.1
 Imports:
+    dplyr,
+    here,
     knitr,
-    rmarkdown
+    readxl,
+    rmarkdown,
+    tidyr,
+    usethis
 Encoding: UTF-8
