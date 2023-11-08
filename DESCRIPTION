@@ -18,3 +18,5 @@ Encoding: UTF-8
 Suggests: 
     gitcreds,
     renv
+URL: https://github.com/Superfrey/AdvancedR3
+BugReports: https://github.com/Superfrey/AdvancedR3/issues
