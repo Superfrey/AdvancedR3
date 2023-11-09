@@ -67,7 +67,7 @@ list(
     ),
 
     tar_target(
-        name = fig_metabolite_distributio,
+        name = fig_metabolite_distribution,
         command = plot_distribution(lipidomics)
     )
 )
