@@ -55,7 +55,6 @@ list(
                command = "data/lipidomics.csv",
                format = "file"
                ),
-
     tar_target(
         name = lipidomics,
         command = readr::read_csv(here::here(file), show_col_types = FALSE)
@@ -65,7 +64,6 @@ list(
         name = df_stats_by_metabolite,
         command = descriptive_stats(lipidomics)
     ),
-
     tar_target(
         name = fig_metabolite_distribution,
         command = plot_distribution(lipidomics)

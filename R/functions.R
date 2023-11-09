@@ -15,7 +15,6 @@ descriptive_stats <- function(data) {
 }
 
 
-
 #' Plot distrubution of continous scale
 #'
 #' @param dataset
