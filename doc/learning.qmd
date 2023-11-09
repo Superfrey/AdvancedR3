@@ -17,6 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 targets::tar_config_set(store = here::here("_targets"))
 library(tidyverse)
 library(targets)
+library(recipes)
 lipidomics <- tar_read(lipidomics)
 ```
 
@@ -48,26 +49,21 @@ lipidomics %>%
     filter( n > 1)
 ```
 
-Multiple recordings per individual
+# Transforming into wideformat
 
 ```{r pivot data to wide format}
-lipidomics_wide <-  lipidomics %>% 
-    mutate(metabolite = snakecase::to_snake_case(metabolite)) %>% 
-    pivot_wider(
-        names_from = metabolite,
-        values_from = value,
-        values_fn = mean,
-        names_prefix = "metabolte_"
-    )
+lipidomics_wide <- lipidomics %>% 
+    column_values_to_snake_case(metabolite) %>% 
+    metabolites_to_wide()
+```
 
-lipidomics %>% 
-    column_values_to_snake_case(metabolite)
+# Perform analysis
+
+```{r}
 
 ```
 
-```{r snake case function}
-column_values_to_snake_case <- function(data, cols) {
-    data %>% 
-    dplyr::mutate(dplyr::across({{cols}}, snakecase::to_snake_case))
-}
+```{r}
+recipe_specs <- lipidomics_wide %>%
+  create_recipe_spec(metabolite_cholesterol)
 ```
