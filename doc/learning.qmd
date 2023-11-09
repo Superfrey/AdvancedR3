@@ -39,14 +39,14 @@ tar_read(fig_metabolite_distribution)
 ## Building model
 
 ```{r}
-log_reg_specs <-  parsnip::logistic_reg() %>% 
+log_reg_specs <- parsnip::logistic_reg() %>%
     parsnip::set_engine("glm")
 ```
 
 ```{r count}
-lipidomics %>% 
-    count(code, metabolite) %>% 
-    filter( n > 1)
+lipidomics %>%
+    count(code, metabolite) %>%
+    filter(n > 1)
 ```
 
 # Data and model preparation
@@ -54,8 +54,8 @@ lipidomics %>%
 ## Transforming into wideformat
 
 ```{r pivot data to wide format}
-lipidomics_wide <- lipidomics %>% 
-    column_values_to_snake_case(metabolite) %>% 
+lipidomics_wide <- lipidomics %>%
+    column_values_to_snake_case(metabolite) %>%
     metabolites_to_wide()
 ```
 
@@ -66,14 +66,23 @@ predictors, outcome, standardization
 Combine everything and the two parts in the input by pipeline seperately
 
 ```{r mode workflow combined in one}
-model_workflow <- create_model_workflow( 
-    parsnip::logistic_reg() %>% 
-    parsnip::set_engine("glm"),
-    lipidomics_wide %>% 
+model_workflow <- create_model_workflow(
+    parsnip::logistic_reg() %>%
+        parsnip::set_engine("glm"),
+    lipidomics_wide %>%
         create_recipe_spec(metabolite_cholesterol)
-    )
+) %>% 
+    parsnip::fit(lipidomics_wide) %>% 
+        tidy_model_output()
+    
 ```
 
-```{r}
+```{r get summary stats}
+fitted_model <- model_workflow %>%
+    parsnip::fit(lipidomics_wide)
+```
 
+```{r fitted model with log odds}
+fitted_model %>%
+    tidy_model_output()
 ```
