@@ -63,42 +63,17 @@ lipidomics_wide <- lipidomics %>%
 
 predictors, outcome, standardization
 
-```{r}
-recipe_specs <- lipidomics_wide %>%
-  create_recipe_spec(metabolite_cholesterol)
-```
+Combine everything and the two parts in the input by pipeline seperately
 
-```{r}
-workflows::workflow() %>%
-  workflows::add_model(log_reg_specs) %>%
-  workflows::add_recipe(recipe_specs)
-```
-
-```{r}
-#' Create a workflow object of the model and transformations.
-#'
-#' @param model_specs The model specs
-#' @param recipe_specs The recipe specs
-#'
-#' @return A workflow object
-#'
-create_model_workflow <- function(model_specs, recipe_specs) {
-  workflows::workflow() %>%
-    workflows::add_model(model_specs) %>%
-    workflows::add_recipe(recipe_specs)
-}
-```
-
-```{r}
-create_model_workflow(log_reg_specs, recipe_specs)
-```
-
-```{r}
+```{r mode workflow combined in one}
 model_workflow <- create_model_workflow( 
     parsnip::logistic_reg() %>% 
     parsnip::set_engine("glm"),
     lipidomics_wide %>% 
         create_recipe_spec(metabolite_cholesterol)
     )
-model_workflow
+```
+
+```{r}
+
 ```
