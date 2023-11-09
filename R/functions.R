@@ -13,3 +13,19 @@ descriptive_stats <- function(data) {
         dplyr::summarise(dplyr::across(value, list(mean = mean, sd = sd))) %>%
         dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), ~ round(.x, digits = 1)))
 }
+
+
+
+#' Plot distrubution of continous scale
+#'
+#' @param dataset
+#'
+#' @return histograms
+#' @export facetplot of histograms
+#'
+#' @examples
+plot_distribution <- function(data) {
+    ggplot2::ggplot(data, aes(x = value)) +
+        ggplot2::geom_histogram() +
+        ggplot2::facet_wrap(vars(metabolite), scales = "free")
+}

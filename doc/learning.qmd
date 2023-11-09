@@ -21,14 +21,6 @@ lipidomics <- read_csv(here::here("data/lipidomics.csv"))
 
 ## Basic statistics
 
-```{r basic-stats}
-
-lipidomics %>% 
-    group_by(metabolite) %>% 
-    summarise(across(value, list(mean = mean, sd = sd))) %>% 
-    mutate(across(where(is.numeric), ~round(.x, digits = 1)))
-```
-
 ### Function for descriptive stats
 
 ```{r}
@@ -61,11 +53,21 @@ metabolite_distribution_plot
 ```
 
 ```{r}
+#' Plot distrubution of continous scale 
+#'
+#' @param dataset
+#'
+#' @return histograms
+#' @export facetplot of histograms
+#'
+#' @examples
 plot_distribution <- function(data) {
   ggplot2::ggplot(data, aes(x = value)) +
   ggplot2::geom_histogram() +
   ggplot2::facet_wrap(vars(metabolite), scales = "free")
 }
+
+plot_distribution(lipidomics)
 ```
 
 ## This is poorly formatted
