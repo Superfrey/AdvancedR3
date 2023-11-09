@@ -39,8 +39,8 @@ tar_read(fig_metabolite_distribution)
 ## Building model
 
 ```{r}
-log_reg_specs <-  logistic_reg() %>% 
-    set_engine("glm")
+log_reg_specs <-  parsnip::logistic_reg() %>% 
+    parsnip::set_engine("glm")
 ```
 
 ```{r count}
@@ -49,7 +49,9 @@ lipidomics %>%
     filter( n > 1)
 ```
 
-# Transforming into wideformat
+# Data and model preparation
+
+## Transforming into wideformat
 
 ```{r pivot data to wide format}
 lipidomics_wide <- lipidomics %>% 
@@ -57,13 +59,46 @@ lipidomics_wide <- lipidomics %>%
     metabolites_to_wide()
 ```
 
-# Perform analysis
+## define model
 
-```{r}
-
-```
+predictors, outcome, standardization
 
 ```{r}
 recipe_specs <- lipidomics_wide %>%
   create_recipe_spec(metabolite_cholesterol)
+```
+
+```{r}
+workflows::workflow() %>%
+  workflows::add_model(log_reg_specs) %>%
+  workflows::add_recipe(recipe_specs)
+```
+
+```{r}
+#' Create a workflow object of the model and transformations.
+#'
+#' @param model_specs The model specs
+#' @param recipe_specs The recipe specs
+#'
+#' @return A workflow object
+#'
+create_model_workflow <- function(model_specs, recipe_specs) {
+  workflows::workflow() %>%
+    workflows::add_model(model_specs) %>%
+    workflows::add_recipe(recipe_specs)
+}
+```
+
+```{r}
+create_model_workflow(log_reg_specs, recipe_specs)
+```
+
+```{r}
+model_workflow <- create_model_workflow( 
+    parsnip::logistic_reg() %>% 
+    parsnip::set_engine("glm"),
+    lipidomics_wide %>% 
+        create_recipe_spec(metabolite_cholesterol)
+    )
+model_workflow
 ```
