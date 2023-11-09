@@ -9,6 +9,7 @@ Imports:
     here,
     knitr,
     parsnip,
+    quarto,
     readr,
     readxl,
     recipes,

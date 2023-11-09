@@ -60,12 +60,13 @@ lipidomics_wide <-  lipidomics %>%
         names_prefix = "metabolte_"
     )
 
-column_values_to_snake_case <- function(data, cols ) {
+column_values_to_snake_case <- function(data, cols) {
     data %>% 
-    mutate(dplyr::across({{cols}}) = snakecase::to_snake_case(metabolite))
+    dplyr::mutate(dplyr::across({{cols}}), snakecase::to_snake_case)
 }
 
+
 lipidomics %>% 
-    column_values_to_snake_case()
+    column_values_to_snake_case(metabolite)
 
 ```
