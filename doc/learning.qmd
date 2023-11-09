@@ -8,7 +8,7 @@ editor:
       canonical: true
 ---
 
-## Header 1
+# Advance learnig task
 
 ```{r setup}
 #| include: false
@@ -20,7 +20,7 @@ library(targets)
 lipidomics <- tar_read(lipidomics)
 ```
 
-## Results
+## Descriptive results
 
 ```{r}
 tar_read(df_stats_by_metabolite) %>%
@@ -31,4 +31,17 @@ tar_read(df_stats_by_metabolite) %>%
 
 ```{r}
 tar_read(fig_metabolite_distribution)
+```
+
+# Analysis
+
+## Building model
+
+```{r}
+log_reg_specs <-  logistic_reg() %>% 
+    set_engine("glm")
+```
+
+```{r}
+
 ```

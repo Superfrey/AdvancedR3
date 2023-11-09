@@ -8,15 +8,18 @@ Imports:
     ggplot2,
     here,
     knitr,
+    parsnip,
     readr,
     readxl,
+    recipes,
     rmarkdown,
     snakecase,
     stringr,
     tarchetypes,
     targets,
     tidyr,
-    usethis
+    usethis,
+    workflows
 Encoding: UTF-8
 Suggests: 
     gitcreds,
@@ -26,4 +29,5 @@ Suggests:
 URL: https://github.com/Superfrey/AdvancedR3
 BugReports: https://github.com/Superfrey/AdvancedR3/issues
 Depends: 
+    tidymodels,
     tidyverse
