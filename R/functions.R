@@ -141,3 +141,53 @@ split_by_metabolite <- function(data) {
         dplyr::group_split(metabolite) %>%
         purrr::map(metabolites_to_wide)
 }
+
+#' Loop analysis with multiple analysis in one go
+#'
+#' @param data
+#'
+#' @return estimates and p-values
+#' @export a table
+#'
+#' @examples
+loop_analysis_metabolites <- function(data) {
+    data %>%
+        split_by_metabolite() %>%
+        purrr::map(generate_model_results) %>%
+        list_rbind() %>%
+        dplyr::filter(stringr::str_detect(term, "metabolite_"))
+}
+
+#' Create names for table
+#'
+#' @param model_results
+#' @param data for the analusis
+#'
+#' @return metabolites names
+#' @export
+#'
+#' @examples
+add_original_metabolite_names <- function(model_results,data) {
+    data %>%
+        mutate(term = metabolite) %>%
+        column_values_to_snake_case(term) %>%
+        mutate(term = str_c("metabolite_", term)) %>%
+        distinct(term, metabolite) %>%
+        right_join(model_results, by = "term")
+}
+
+#' calculate estimates and get names combined
+#'
+#' @param data and models
+#'
+#' @return table with estimates
+#' @export
+#'
+#' @examples
+calculate_estimates <- function(data) {
+    data %>%
+        loop_analysis_metabolites() %>%
+        add_original_metabolite_names(data)
+
+}
+
