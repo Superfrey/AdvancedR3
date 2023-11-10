@@ -8,7 +8,7 @@ editor:
       canonical: true
 ---
 
-# Advance learnig task
+# Advance learnig objectives
 
 ```{r setup}
 #| include: false
@@ -19,9 +19,10 @@ library(tidyverse)
 library(targets)
 library(recipes)
 lipidomics <- tar_read(lipidomics)
+source(here::here("R/functions.R"))
 ```
 
-## Descriptive results
+# 6. Descriptive results using targets
 
 ```{r}
 tar_read(df_stats_by_metabolite) %>%
@@ -34,22 +35,7 @@ tar_read(df_stats_by_metabolite) %>%
 tar_read(fig_metabolite_distribution)
 ```
 
-# Analysis
-
-## Building model
-
-```{r}
-log_reg_specs <- parsnip::logistic_reg() %>%
-    parsnip::set_engine("glm")
-```
-
-```{r count}
-lipidomics %>%
-    count(code, metabolite) %>%
-    filter(n > 1)
-```
-
-# Data and model preparation
+# 7. A general approach to do analysis
 
 ## Transforming into wideformat
 
@@ -59,30 +45,30 @@ lipidomics_wide <- lipidomics %>%
     metabolites_to_wide()
 ```
 
-## define model
+Predictors, outcome, standardization...
 
-predictors, outcome, standardization
+Combine everything and the two parts in the input by pipeline,
+separately.
 
-Combine everything and the two parts in the input by pipeline seperately
+## Run analysis and get estimates!
 
 ```{r mode workflow combined in one}
-model_workflow <- create_model_workflow(
+create_model_workflow(
     parsnip::logistic_reg() %>%
         parsnip::set_engine("glm"),
     lipidomics_wide %>%
         create_recipe_spec(metabolite_cholesterol)
-) %>% 
-    parsnip::fit(lipidomics_wide) %>% 
-        tidy_model_output()
-    
-```
-
-```{r get summary stats}
-fitted_model <- model_workflow %>%
-    parsnip::fit(lipidomics_wide)
-```
-
-```{r fitted model with log odds}
-fitted_model %>%
+) %>%
+    parsnip::fit(lipidomics_wide) %>%
     tidy_model_output()
+```
+
+# 8. Now fun start: make multiple regresiion in one go
+
+```{r}
+lipidomics %>% 
+ split_by_metabolite() %>% 
+    purrr::map(generate_model_results) %>% 
+    list_rbind() %>% 
+    dplyr::filter(stringr::str_detect(term, "metabolite_"))
 ```
