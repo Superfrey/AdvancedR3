@@ -20,5 +20,5 @@ editor:
     wrap: 72
     canonical: true
 
-excecute:
+execute:
   freeze: true
