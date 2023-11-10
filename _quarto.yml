@@ -21,4 +21,4 @@ editor:
     canonical: true
 
 excecute:
-  freeze: auto
+  freeze: true
