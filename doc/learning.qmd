@@ -8,12 +8,6 @@ author:
         address: Palle Juul-Jensens Boulevard 11
         city: Aarhus
         postal-code: 8000
-        
-format: docx
-editor:
-    markdown: 
-      wrap: 72
-      canonical: true
 ---
 
 # Advance learnig objectives
@@ -71,7 +65,7 @@ create_model_workflow(
     tidy_model_output()
 ```
 
-# 8. Now fun start: make multiple regresiion in one go
+# 8. Now fun start: make multiple regression in one go
 
 ```{r get estimates from loop models based on functions}
 model_estimates <- targets::tar_read(models_estimate_loops)

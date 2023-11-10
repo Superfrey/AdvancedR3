@@ -1,0 +1,21 @@
+project:
+  type: website
+website:
+  title:  Lipidomics analysis
+  navbar:
+    left:
+      - href: index.qmd
+        text: "Home"
+      - href: doc/learning.qmd
+        text: "Report"
+format:
+    html:
+      theme: simplex
+knitr:
+  opts_chunk:
+    echo: false
+
+editor:
+  markdown:
+    wrap: 72
+    canonical: true
