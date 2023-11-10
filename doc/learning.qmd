@@ -65,27 +65,21 @@ create_model_workflow(
 
 # 8. Now fun start: make multiple regresiion in one go
 
-```{r}
-model_estimates <- lipidomics %>% 
- split_by_metabolite() %>% 
-    purrr::map(generate_model_results) %>% 
-    list_rbind() %>% 
-     dplyr::filter(stringr::str_detect(term, "metabolite_"))
+```{r get estimates from loop models based on functions}
+model_estimates <- targets::tar_read(models_estimate_loops)
+```
+
+```{r plot estimates in forrestplot}
+plot_estimates <- model_estimates %>% 
+    ggplot(aes(
+        x = estimate,
+        y = metabolite,
+        xmin = estimate - std.error,
+        xmax = estimate + std.error
+    )) +
+    geom_pointrange() + 
+    coord_fixed(xlim = c(0,5))
 ```
 
 ```{r}
-lipidomics %>% 
-    mutate(term = metabolite) %>% 
-    column_values_to_snake_case(term) %>% 
-    mutate(term = str_c("metabolite_", term)) %>% 
-    distinct(term, metabolite) %>% 
-    right_join(model_estimates, by = "term")
-```
-
-```{r}
-
-```
-
-```{r}
-model_1<- calculate_estimates(lipidomics)
 ```

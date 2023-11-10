@@ -68,11 +68,10 @@ list(
         name = fig_metabolite_distribution,
         command = plot_distribution(lipidomics)
     ),
-    # tar_target(
-    #     name = data_to_wide,
-    #     command = metabolites_to_wider(lipidomics)
-    # ),
-
+    tar_target(
+         name = models_estimate_loops,
+         command = calculate_estimates(lipidomics)
+     ),
     tar_quarto(
         name = quarto_doc,
         path = "doc/learning.qmd"
