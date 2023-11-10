@@ -1,7 +1,15 @@
 ---
 title: "Draft Quarto document"
-author: "Your Name"
-format: html
+author: 
+  - name: Jonas Schaarup
+    email: jfrscha@ph.au.dk
+    affiliations:
+      - name: Steno Diabetes Center Aarhus
+        address: Palle Juul-Jensens Boulevard 11
+        city: Aarhus
+        postal-code: 8000
+        
+format: docx
 editor:
     markdown: 
       wrap: 72
