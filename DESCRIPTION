@@ -15,6 +15,7 @@ Imports:
     readr,
     readxl,
     recipes,
+    remotes,
     rmarkdown,
     snakecase,
     stringr,

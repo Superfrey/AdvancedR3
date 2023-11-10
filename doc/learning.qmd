@@ -69,17 +69,6 @@ create_model_workflow(
 model_estimates <- targets::tar_read(models_estimate_loops)
 ```
 
-```{r plot estimates in forrestplot}
-plot_estimates <- model_estimates %>% 
-    ggplot(aes(
-        x = estimate,
-        y = metabolite,
-        xmin = estimate - std.error,
-        xmax = estimate + std.error
-    )) +
-    geom_pointrange() + 
-    coord_fixed(xlim = c(0,5))
-```
-
 ```{r}
+targets::tar_read(fig_model_forrest_plot)
 ```

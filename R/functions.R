@@ -42,7 +42,7 @@ plot_distribution <- function(data) {
 #'
 column_values_to_snake_case <- function(data, cols) {
     data %>%
-        dplyr::mutate(dplyr::across({{cols}}, snakecase::to_snake_case))
+        dplyr::mutate(dplyr::across({{ cols }}, snakecase::to_snake_case))
 }
 
 #' Pivot long format to wide format
@@ -63,7 +63,6 @@ metabolites_to_wide <- function(data) {
             values_fn = mean,
             names_prefix = "metabolite_"
         )
-
 }
 
 
@@ -106,8 +105,7 @@ create_model_workflow <- function(model_specs, recipe_specs) {
 tidy_model_output <- function(workflow_fitted_model) {
     workflow_fitted_model %>%
         workflows::extract_fit_parsnip() %>%
-        broom::tidy(exponentiate = TRUE
-                    )
+        broom::tidy(exponentiate = TRUE)
 }
 
 
@@ -167,7 +165,7 @@ loop_analysis_metabolites <- function(data) {
 #' @export
 #'
 #' @examples
-add_original_metabolite_names <- function(model_results,data) {
+add_original_metabolite_names <- function(model_results, data) {
     data %>%
         mutate(term = metabolite) %>%
         column_values_to_snake_case(term) %>%
@@ -188,6 +186,25 @@ calculate_estimates <- function(data) {
     data %>%
         loop_analysis_metabolites() %>%
         add_original_metabolite_names(data)
-
 }
 
+
+#' Forrest function for results
+#'
+#' @param results
+#'
+#' @return
+#' @export forrest plot
+#'
+#' @examples
+plot_estimates <- function(results) {
+    results %>%
+        ggplot(aes(
+            x = estimate,
+            y = metabolite,
+            xmin = estimate - 1.96 * (std.error),
+            xmax = estimate + 1.96 * (std.error)
+        )) +
+        geom_pointrange() +
+        coord_fixed(xlim = c(0, 5))
+}
