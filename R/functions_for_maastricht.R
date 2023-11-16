@@ -45,26 +45,6 @@ column_values_to_snake_case <- function(data, cols) {
         dplyr::mutate(dplyr::across({{ cols }}, snakecase::to_snake_case))
 }
 
-#' Pivot long format to wide format
-#' and summary mean by metabolite
-#'
-#' @param data
-#' @param cols
-#'
-#' @return
-#' @export
-#'
-#' @examples
-metabolites_to_wide <- function(data) {
-    data %>%
-        tidyr::pivot_wider(
-            names_from = metabolite,
-            values_from = value,
-            values_fn = mean,
-            names_prefix = "metabolite_"
-        )
-}
-
 
 #' A transformation recipe to pre-process the data.
 #'
@@ -73,11 +53,11 @@ metabolites_to_wide <- function(data) {
 #'
 #' @return
 #'
-create_recipe_spec <- function(data, metabolite_variable) {
+create_recipe_spec <- function(data, hrv_variable) {
     recipes::recipe(data) %>%
-        recipes::update_role({{ metabolite_variable }}, age, gender, new_role = "predictor") %>%
+        recipes::update_role({{ hrv_variable }}, age, gender, new_role = "predictor") %>%
         recipes::update_role(class, new_role = "outcome") %>%
-        recipes::step_normalize(tidyselect::starts_with("metabolite_"))
+        recipes::step_normalize(tidyselect::starts_with("ECGvar_")) # check again add PWV to log-tranformation
 }
 
 
@@ -117,10 +97,10 @@ tidy_model_output <- function(workflow_fitted_model) {
 #'
 generate_model_results <- function(data) {
     create_model_workflow(
-        parsnip::logistic_reg() %>%
-            parsnip::set_engine("glm"),
+        parsnip::linear_reg() %>%
+            parsnip::set_engine("lm"),
         data %>%
-            create_recipe_spec(tidyselect::starts_with("metabolite_"))
+            create_recipe_spec(tidyselect::starts_with("ecg_var")) #dobbelt check
     ) %>%
         parsnip::fit(data) %>%
         tidy_model_output()
@@ -136,9 +116,9 @@ generate_model_results <- function(data) {
 split_by_metabolite <- function(data) {
     data %>%
         column_values_to_snake_case(metabolite) %>%
-        dplyr::group_split(metabolite) %>%
-        purrr::map(metabolites_to_wide)
-}
+        dplyr::group_split(tidyselect::starts_with("ecg_var"))
+} # go through
+
 
 #' Loop analysis with multiple analysis in one go
 #'
@@ -169,7 +149,7 @@ add_original_metabolite_names <- function(model_results, data) {
     data %>%
         mutate(term = metabolite) %>%
         column_values_to_snake_case(term) %>%
-        mutate(term = str_c("metabolite_", term)) %>%
+        mutate(term = str_c("ECGvar_", term)) %>%
         distinct(term, metabolite) %>%
         right_join(model_results, by = "term")
 }

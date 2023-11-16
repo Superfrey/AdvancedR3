@@ -43,5 +43,7 @@ You'll need to have remotes installed for this to work.
 # Resource
 
 For more information on this folder and file workflow and setup, check
-out the [prodigenr](https://rostools.github.io/prodigenr) online
-documentation.
+out the
+[prodigenr](https://superfrey.github.io/AdvancedR3/doc/learning.html)
+online documentation.
+

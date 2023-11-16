@@ -1,5 +1,5 @@
 ---
-title: "Draft Quarto document"
+title: "Advanced R course reproduceable workflow"
 author: 
   - name: Jonas Schaarup
     email: jfrscha@ph.au.dk
